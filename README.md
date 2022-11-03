@@ -1,2 +1,22 @@
 # SmartcloudService
-managed by Pipecloud Group
+managed by Pipecloud Group 
+
+Prediction target
+Predict whether the user will order one of his prior ordered products or not. Primary Key is the user-product pair to predict 
+whether will be a reorder or not.
+
+Features
+
+User dependent Features
+1.Ratio of having reordered product in the user's prior orders.
+2.Frequency of the user buying this product.
+3.Frequency of the user buying products from the same aisle.
+4.On avg the hour the user buys this product at.
+5.On avg which day of week the user buys this product at.
+6.On avg # of days between 2 user's orders containing this product.
+7.On avg the add to cart order by which the user puts this product in his prior orders.
+
+data input: all product items, order list, all product id
+output data: predicted product id
+Pre-build optimized ML model 
+        - XGBoost model
