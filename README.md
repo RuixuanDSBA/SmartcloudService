@@ -14,11 +14,12 @@ Our goal is:
 managed by Pipecloud Group: Team member: Alex, Rex, Ryan, Alvin, Ning Ni, Niu Yue, Luna
 use this tool to create pipeline diagram: https://app.diagrams.net/
 
+
+
+## Features
 Prediction target
 Predict whether the user will order one of his prior ordered products or not. Primary Key is the user-product pair to predict 
 whether will be a reorder or not.
-
-##Features
 
 User dependent Features
 1.Ratio of having reordered product in the user's prior orders.
