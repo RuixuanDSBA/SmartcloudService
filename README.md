@@ -15,7 +15,7 @@ managed by Pipecloud Group: Team member: Alex, Rex, Ryan, Alvin, Ning Ni, Niu Yu
 use this tool to create pipeline diagram: https://app.diagrams.net/
 
 
-
+##细节 放document
 ## Features
 Prediction target
 Predict whether the user will order one of his prior ordered products or not. Primary Key is the user-product pair to predict 
