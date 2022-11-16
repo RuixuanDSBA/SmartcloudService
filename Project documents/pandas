@@ -1,0 +1,60 @@
+from lib2to3.pgen2.pgen import DFAState
+import numpy as np
+import pandas as pd
+import re
+# import matplotlib.pyplot as plt
+
+
+#read csv file to dataframe
+
+aisles_df = pd.read_csv('aisles.csv')
+#print(aisles_df)
+
+departments_df = pd.read_csv('departments.csv')
+
+orders_df = pd.read_csv('orders.csv')
+
+products_df = pd.read_csv('products.csv')
+
+order_products_train = pd.read_csv('order_products__train.csv')
+
+order_products_prior = pd.read_csv('order_products__prior.csv')
+
+
+#obtain the total amount of data
+
+aisles_df.describe()
+
+departments_df.describe()
+
+orders_df.describe()
+
+products_df.describe()
+
+order_products_train.describe()
+
+order_products_prior.describe()
+
+#print data from reading 
+print(f'The shape of order_products_train: {order_products_train.shape}')
+print(order_products_train.head(10))
+
+print(f'The shape of order_products_prior: {order_products_prior.shape}')
+order_products_prior.head(10)
+
+print('Shape of products table: ', products_df.shape)
+print('Uniques products', products_df['product_name'].nunique())
+print(products_df.head(10))
+
+organic = products_df['product_name'].str.contains('Organic')
+products_df['is_organic'] = organic
+print(products_df.iloc[100:110].head())
+
+print('Shape of departments table: ', departments_df.shape)
+print(departments_df.head(21))
+
+print('Shape of aisles table: ', aisles_df.shape)
+print(aisles_df.head(10))
+
+print('Shape of Orders table: ', orders_df.shape)
+print(orders_df.head(15))
