@@ -1,0 +1,130 @@
+****load data from local PC****
+
+
+use database DE1122;   -use database
+
+-build table
+create or replace table orders(
+                                      orderid number(15,0) not null,
+                                      userid number(8,0),
+                                      eval_set varchar(10),
+                                      order_number number(8,0),
+                                      order_dow number(3,0),
+                                      order_hourofday number(3,0),
+                                      days_since_prior_order number(5,0)
+                                  );
+
+-build format 
+create or replace file format oder_format
+                                  type = 'csv'
+                                  field_delimiter = ','
+                                  record_delimiter = '\n'
+                                  skip_header = 1
+                                  trim_space = true
+                                  null_if = ('null','NULL');
+
+create or replace stage my_csv_stage
+                                  file_format = oder_format;
+
+put file:///users/OKUSER/Desktop/DE11/orders.csv @my_csv_stage auto_compress=true;
+
+
+USE DE1122;    --use database
+
+
+--use warehouse
+
+>create or replace WAREHOUSE DE11TEST1;
+
+copy into orders
+                             from @my_csv_stage/orders.csv.gz
+                             file_format = (format_name = DE1122)
+                             on_error = 'skip_file';
+
+
+select * from orders limit 15;  -show first 15 rows
+
+
+-create product table2
+create or replace table products(
+                                 productid number(9,0) not null,
+                                 productname varchar(200),
+                                 aisle_id number(5,0),
+                                 department_id number(5,0)
+                                 );
+
+-create format
+create or replace file format prod_format
+                             type = 'csv'
+                             field_delimiter = ','
+                             record_delimiter = '\n'
+                             skip_header = 1
+                             trim_space = true
+                             null_if = ('null','NULL');
+
+create or replace stage DE1122.my_csv_stage
+                             file_format = prod_format;
+create or replace stage my_csv_stage
+                             file_format = prod_format;
+
+put file:///users/OKUSER/Desktop/DE11/products.csv @my_csv_stage auto_compress=true ;
+
+copy into products
+                             from @my_csv_stage/products.csv.gz
+                             file_format = (format_name = prod_format)
+                             on_error = 'skip_file';
+
+-create table3
+create or replace table aisles(
+                                 aisleid number(4,0) not null,
+                                 aislename varchar(50)
+                             );
+
+create or replace file format aisles_format
+                             type = 'csv'
+                             field_delimiter = ','
+                             record_delimiter = '\n'
+                             skip_header = 1
+                             trim_space = true
+                             null_if = ('null','NULL');
+
+
+create or replace stage my_csv_stage
+                             file_format = aisles_format;
+
+put file:///users/OKUSER/Desktop/DE11/aisles.csv @my_csv_stage auto_compress=true ;
+
+copy into aisles
+                             from @my_csv_stage/aisles.csv.gz
+                             file_format = (format_name = aisles_format)
+                             on_error = 'skip_file';
+
+select * from aisles limit 10;
+
+
+---create table 4
+
+create or replace table departments(
+    departmentid number(4,0) not null,
+    departmentname varchar(30)
+);
+
+
+create or replace file format depart_format
+                             type = 'csv'
+                             field_delimiter = ','
+                             record_delimiter = '\n'
+                             skip_header = 1
+                             trim_space = true
+                             null_if = ('null','NULL');
+
+create or replace stage my_csv_stage
+                             file_format = depart_format;
+
+put file:///users/OKUSER/Desktop/DE11/departments.csv @my_csv_stage auto_compress=true ;
+
+copy into departments
+                             from @my_csv_stage/departments.csv.gz
+                             file_format = (format_name = depart_format)
+                             on_error = 'skip_file';
+
