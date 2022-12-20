@@ -1,0 +1,135 @@
+use warehouse COMPUTE_WH;
+
+create database linkimba;
+use linkimba;
+
+create schema if not exists imbaschema;
+use schema imbaschema;
+
+create or replace table linkimba.imbaschema.orders(
+   orderid number(15,0) not null,
+   userid number(8,0),
+   eval_set varchar(10),
+   order_number number(8,0),
+   order_dow number(3,0),
+   order_hourofday number(3,0),
+   days_since_prior_order number(5,0)
+);
+
+-- 1.1 create file format 
+create or replace file format linkimba.imbaschema.imba_demo1
+type = 'csv'
+field_delimiter = ','
+record_delimiter = '\n'
+skip_header = 1
+trim_space = true
+null_if = ('null','NULL');
+
+-- 1.2 create stage
+create or replace stage linkimba.imbaschema.orderstage
+    URL = 's3://jr11alvint/orders.csv'
+    storage_integration = s3newint
+    file_format = linkimba.imbaschema.imba_demo1;
+    
+    
+copy into orders
+    from @linkimba.imbaschema.orderstage;
+    
+
+select*From ORDERS;
+  
+---
+
+-- SECOND TABLE PRODUCTS; 
+
+create or replace table linkimba.imbaschema.products(
+   productid number(9,0) not null,
+   productname varchar(200),
+   aisle_id number(5,0),
+   department_id number(5,0)
+);
+
+
+-- 2.1 create file format 
+create or replace file format linkimba.imbaschema.imba_demo2
+type = 'csv'
+field_delimiter = ','
+record_delimiter = '\n'
+skip_header = 1
+trim_space = true
+null_if = ('null','NULL');
+
+-- 2.2 create stage
+create or replace stage linkimba.imbaschema.productsstage
+    URL = 's3://jr11alvint/products.csv'
+    storage_integration = s3newint
+    file_format = linkimba.imbaschema.imba_demo2;
+
+
+    
+copy into products
+    from @linkimba.imbaschema.productsstage;
+    
+
+select*From products;
+
+----THIRD TABLE AISLES
+
+create or replace table linkimba.imbaschema.aisles(
+   aisleid number(4,0) not null,
+   aislename varchar(50)
+);
+
+-- 3.1 create file format 
+create or replace file format linkimba.imbaschema.imba_demo3
+type = 'csv'
+field_delimiter = ','
+record_delimiter = '\n'
+skip_header = 1
+trim_space = true
+null_if = ('null','NULL');
+
+
+-- 3.2 create stage
+create or replace stage linkimba.imbaschema.aislesstage
+    URL = 's3://jr11alvint/aisles.csv'
+    storage_integration = s3newint
+    file_format = linkimba.imbaschema.imba_demo3;
+
+
+    
+copy into aisles
+    from @linkimba.imbaschema.aislesstage;
+    
+
+select*From aisles;
+
+
+----- FOURTH TABLE DEPARTMENTS
+
+create or replace table linkimba.imbaschema.departments(
+   departmentid number(4,0) not null,
+   departmentname varchar(30)
+);
+
+-- 4.1 create file format 
+create or replace file format linkimba.imbaschema.imba_demo4
+type = 'csv'
+field_delimiter = ','
+record_delimiter = '\n'
+skip_header = 1
+trim_space = true
+null_if = ('null','NULL');
+
+-- 4.2 create stage 
+create or replace stage linkimba.imbaschema.departmentsstage
+    URL = 's3://jr11alvint/departments.csv'
+    storage_integration = s3newint
+    file_format = linkimba.imbaschema.imba_demo4;
+    
+
+-- 4.3 put the file into stage 
+copy into departments
+    from @linkimba.imbaschema.departmentsstage;
+    
+select * from departments;
