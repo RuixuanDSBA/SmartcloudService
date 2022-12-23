@@ -133,3 +133,66 @@ copy into departments
     from @linkimba.imbaschema.departmentsstage;
     
 select * from departments;
+
+---FIFTH TABLE order_products_prior
+
+create or replace table linkimba.imbaschema.orderproductsprior(
+   order_id number(15,0) not null,
+   product_id number(8,0),
+   add_to_cart_order number(3,0),
+   reordered number(3,0)
+);
+
+-- 5.1 create file format 
+create or replace file format linkimba.imbaschema.imba_demo5
+type = 'csv'
+field_delimiter = ','
+record_delimiter = '\n'
+skip_header = 1
+trim_space = true
+null_if = ('null','NULL');
+
+-- 5.2 create stage
+create or replace stage linkimba.imbaschema.orderpriorstage
+    URL='s3://jr11alvint/order_products_prior.csv'
+    storage_integration=s3newint
+    file_format=linkimba.imbaschema.imba_demo5;
+   
+-- 5.3 put the file into stage 
+copy into orderproductsprior
+    from @linkimba.imbaschema.orderpriorstage;
+    
+select * from orderproductsprior
+limit 20;
+
+
+---SIXTH TABLE order_products_prior
+
+create or replace table linkimba.imbaschema.orderproductstrain(
+   order_id number(8,0) not null,
+   product_id number(6,0),
+   add_to_cart_order number(3,0),
+   reordered number(1,0)
+);
+
+-- 6.1 create file format 
+create or replace file format linkimba.imbaschema.imba_demo6
+type = 'csv'
+field_delimiter = ','
+record_delimiter = '\n'
+skip_header = 1
+trim_space = true
+null_if = ('null','NULL');
+
+-- 6.2 create stage
+create or replace stage linkimba.imbaschema.ordertrainstage
+    URL='s3://jr11alvint/order_products_train.csv'
+    storage_integration=s3newint
+    file_format=linkimba.imbaschema.imba_demo6;
+   
+-- 6.3 put the file into stage 
+copy into orderproductstrain
+    from @linkimba.imbaschema.ordertrainstage;
+    
+select * from orderproductstrain
+limit 20;
