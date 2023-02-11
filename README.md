@@ -1,5 +1,5 @@
 # SmartcloudService
-Piplecloud Group is a commercial cloud business intelligence provider
+Pipecloud Group is a commercial cloud business intelligence provider
 Our goal is:
 1. Be able to process the given data sets in batch    2. find proper cloud services to manage the essential tasks of computing, networking, storage and machine learning. 
 
