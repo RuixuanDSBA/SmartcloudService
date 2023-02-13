@@ -14,3 +14,6 @@ Our goal is:
 managed by Pipecloud Group: Team member: Alex, Rex, Ryan, Alvin, Ning Ni, Niu Yue, Luna
 use this tool to create pipeline diagram: https://app.diagrams.net/
 
+## Project data pipeline:
+![1676299823668](https://user-images.githubusercontent.com/80808320/218599378-483c5ea9-11fc-430c-8e67-bcabf1bc19db.png)
+![aws graph](https://user-images.githubusercontent.com/80808320/218599387-6c1cf2c4-e31d-4bfb-9623-91a374f47a96.png)
